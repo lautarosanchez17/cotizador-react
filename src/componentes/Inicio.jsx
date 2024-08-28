@@ -1,82 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { userContext } from '../../contexto/UserContext';
-//import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 
 const Inicio = () => {
-    
-    //const selectPropiedad = document.querySelector("#propiedad")
-    //const selectUbicacion = document.querySelector("#ubicacion")
-    //const inputMetros2 = document.querySelector("#metros2")
-    const [valor, setValor] = useState('0.00')
-    const [propiedad, setPropiedad] = useState('')
-    const [ubicacion, setUbicacion] = useState('')
-    const [metros2, setMetros2] = useState('')
-    const {agregarItem} = useContext(userContext)
-    const [activo, setActivo] = useState(false)
-      
-    const manejadorClick = () => {
-        setTimeout(() => {
-            setActivo(!activo)
-        }, 1000)
-    }
-
-    const manejadorPropiedad = (e) => {
-        const nuevoValor = e.target.value
-        setPropiedad(nuevoValor)
-    }
-
-    const manejadorUbicacion = (e) => {
-        const nuevoValor = e.target.value 
-        setUbicacion(nuevoValor)
-    }
-
-    const manejadorMetros2 = (e) => {
-        const nuevoValor = e.target.value 
-        setMetros2(nuevoValor)
-    }
-
-    const button = document.querySelector('.button')
-
-    //const alerta = (titulo, mensaje, icono)=> {
-    //    Swal.fire({
-    //        icon: icono || '', 
-    //        title: titulo || '',
-    //        text: mensaje,
-    //        showConfirmButton: false,
-    //        timer: 3500,
-    //        width: '240px'
-    //      })
-    //}
-
-    //const datosCompletos = ()=> (selectPropiedad.value !== '' && selectUbicacion.value !== '' && inputMetros2.value >= 20) ? true : false
-
-    //const realizarCotizacion = () => datosCompletos() ? manejarForm() : alerta('', 'Debes completar todos los datos en pantalla..', 'warning')
-
-    const manejarForm = (e) => {
-        e.preventDefault()
-        button.innerHTML = `<img src="/public/ico/gif/loading.gif" alt="cargando" />`
-        const costoM2 = 351.86
-        setTimeout(() => {
-            let resultado = (costoM2 * Number(propiedad) * Number(ubicacion) * Number(metros2))
-            //alerta('', 'Cotización realizada con éxito.', 'success')
-            setValor(resultado.toFixed(2))
-            button.innerHTML = 'Cotizar'
-        }, 1000)}
-
-
-    const guardar = () => {
-        const fecha = new Date().toLocaleString()
-        const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
-        const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
-        const nuevoItem = {
-            fecha: fecha,
-            propiedad: tituloPropiedad.tipo,
-            ubicacion: tituloUbicacion.tipo,
-            metros2,
-            total: valor
-        }
-        agregarItem(nuevoItem)
-    }
 
     const datosPropiedad = [
         {tipo: 'Casa', factor: 1.09},
@@ -95,7 +21,90 @@ const Inicio = () => {
         { categoria: "ubicacion", tipo: "Gran Buenos Aires", factor: 1.25 },
         { categoria: "ubicacion", tipo: "9 de Julio, Pcia de Bs. As.", factor: 1.005 },
         { categoria: "ubicacion", tipo: "Chivilcoy, Pcia de Bs. As.", factor: 1.012 }]
+    
+    const [valor, setValor] = useState('0.00')
+    const [propiedad, setPropiedad] = useState('')
+    const [ubicacion, setUbicacion] = useState('')
+    const [metros2, setMetros2] = useState('')
+    const {agregarItem} = useContext(userContext)
+    const [activo, setActivo] = useState(false)
+    const selectPropiedad = document.querySelector("#propiedad")
+    const selectUbicacion = document.querySelector("#ubicacion")
+    const inputMetros2 = document.querySelector("#metros2")
+    const button = document.querySelector('.button')
+      
+    const manejadorClick = () => {
+        if (datosCompletos()) {
+            setTimeout(() => {
+                setActivo(!activo)
+            }, 1000)
+        }else {
+            realizarCotizacion()
+        }
+    }
 
+    const manejarCerrar = () => {
+        setActivo(!activo)
+    }
+
+    const manejadorPropiedad = (e) => {
+        const nuevoValor = e.target.value
+        setPropiedad(nuevoValor)
+    }
+
+    const manejadorUbicacion = (e) => {
+        const nuevoValor = e.target.value 
+        setUbicacion(nuevoValor)
+    }
+
+    const manejadorMetros2 = (e) => {
+        const nuevoValor = e.target.value 
+        setMetros2(nuevoValor)
+    }
+
+    const datosCompletos = ()=> (selectPropiedad.value !== '' && selectUbicacion.value !== '' && inputMetros2.value >= 20) ? true : false
+
+    const realizarCotizacion = () => datosCompletos() ? manejarForm() : alerta('', 'Debes completar todos los datos en pantalla..', 'warning')
+    
+    const manejarForm = (e) => {
+        e.preventDefault()
+        button.innerHTML = `<img src="/public/ico/gif/loading.gif" alt="cargando" />`
+        const costoM2 = 351.86
+        setTimeout(() => {
+            const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
+            const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
+            let resultado = (costoM2 * Number(propiedad) * Number(ubicacion) * Number(metros2))
+            alerta('', 'Cotización realizada con éxito.', 'success')
+            setPropiedad(tituloPropiedad.tipo)
+            setUbicacion(tituloUbicacion.tipo)
+            setValor(resultado.toFixed(2))
+            button.innerHTML = 'Cotizar'
+        }, 1000)}
+
+
+    const guardar = () => {
+        const fecha = new Date().toLocaleString()
+        const nuevoItem = {
+            fecha: fecha,
+            propiedad,
+            ubicacion,
+            metros2,
+            total: valor
+        }
+        agregarItem(nuevoItem)
+    }
+
+    const alerta = (titulo, mensaje, icono)=> {
+        Swal.fire({
+            icon: icono || '', 
+            title: titulo || '',
+            text: mensaje,
+            showConfirmButton: false,
+            timer: 3500,
+            width: '240px'
+          })
+    }
+    
     return (
         <section className='contenedor'>
             <h1>Seguros del hogar<img src="/public/ico/img/seguros-casa.png" alt="logo-casa" /></h1>
@@ -125,7 +134,7 @@ const Inicio = () => {
                         <span>Metros cuadrados: {metros2} </span>
                         <p className='importe'>Precio estimado: $ {valor}</p>
                         <button onClick={guardar} className='button'>Guardar</button>
-                        <button onClick={manejadorClick} className='cerrar'><i className="ti ti-x"></i></button>
+                        <button onClick={manejarCerrar} className='cerrar'><i className="ti ti-x"></i></button>
                     </div>
                 </div>
             </div>
