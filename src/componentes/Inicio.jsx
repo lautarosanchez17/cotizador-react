@@ -31,7 +31,8 @@ const Inicio = () => {
     const selectPropiedad = document.querySelector("#propiedad")
     const selectUbicacion = document.querySelector("#ubicacion")
     const inputMetros2 = document.querySelector("#metros2")
-    const button = document.querySelector('.button')
+    const button = document.querySelector('#button-1')
+    const button2 = document.querySelector('#button-2')
     const [propiedadResumen, setPropiedadResumen] = useState('')
     const [ubicacionResumen, setUbicacionResumen] = useState('')
       
@@ -70,7 +71,7 @@ const Inicio = () => {
             title: titulo || '',
             text: mensaje,
             showConfirmButton: false,
-            timer: 3500,
+            timer: 1500,
             width: '240px'
           })
     }
@@ -96,20 +97,25 @@ const Inicio = () => {
 
 
     const guardar = () => {
-        const fecha = new Date().toLocaleString()
-        const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
-        const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
-        const nuevoItem = {
-            fecha: fecha,
-            propiedad: tituloPropiedad.tipo,
-            ubicacion: tituloUbicacion.tipo,
-            metros2,
-            total: valor
-        }
-        agregarItem(nuevoItem)
+        button2.innerHTML = `<img src="/public/ico/gif/loading.gif" alt="cargando" />`
+        setTimeout(() => {
+            setActivo(!activo)
+            const fecha = new Date().toLocaleString()
+            const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
+            const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
+            const nuevoItem = {
+                fecha: fecha,
+                propiedad: tituloPropiedad.tipo,
+                ubicacion: tituloUbicacion.tipo,
+                metros2,
+                total: valor
+            }
+            agregarItem(nuevoItem)
+            alerta('', 'Resumen guardado con éxito.', 'success')
+            button2.innerHTML = 'Guardar'
+        }, 1000)
     }
 
-    
     
     return (
         <section className='contenedor'>
@@ -129,8 +135,7 @@ const Inicio = () => {
                     </select>
                     <label htmlFor="metros2">Ingresa los Metros cuadrados:</label>
                     <input type="number" id="metros2" min="20" max="500" required onChange={manejadorMetros2} />
-
-                    <button onClick={manejadorClick} className='button'>Cotizar</button>
+                    <button onClick={manejadorClick} id='button-1' className='button'>Cotizar</button>
                 </form>
                 <div className={activo ? 'datos-valor' : 'display'}>
                     <h3>Tu resumen</h3>
@@ -139,7 +144,7 @@ const Inicio = () => {
                         <span>Ubicacion: {ubicacionResumen} </span>
                         <span>Metros cuadrados: {metros2} </span>
                         <p className='importe'>Precio estimado: $ {valor}</p>
-                        <button onClick={guardar} className='button'>Guardar</button>
+                        <button onClick={guardar} id='button-2' className='button'>Guardar</button>
                         <button onClick={manejarCerrar} className='cerrar'><i className="ti ti-x"></i></button>
                     </div>
                 </div>
