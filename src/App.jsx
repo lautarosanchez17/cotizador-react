@@ -4,6 +4,7 @@ import Inicio from './componentes/Inicio'
 import UserContext from '../contexto/UserContext'
 import Nav from './componentes/Nav'
 import Historial from './componentes/Historial'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path='historial' element={<Historial />} />
           </Routes>
         </BrowserRouter>
+        <Toaster />
       </div>
       </>
     </UserContext>

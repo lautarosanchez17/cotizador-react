@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { userContext } from '../../contexto/UserContext';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const Inicio = () => {
 
@@ -70,15 +71,17 @@ const Inicio = () => {
             icon: icono || '', 
             title: titulo || '',
             text: mensaje,
+            position: "bottom-end",
             showConfirmButton: false,
             timer: 1500,
-            width: '240px'
+            timerProgressBar: true,
+            width: '250px',
           })
     }
 
     const datosCompletos = ()=> (selectPropiedad.value !== '' && selectUbicacion.value !== '' && inputMetros2.value >= 20) ? true : false
 
-    const realizarCotizacion = () => datosCompletos() ? manejarForm() : alerta('', 'Debes completar todos los datos en pantalla..', 'warning')
+    const realizarCotizacion = () => datosCompletos() ? manejarForm() : alerta('', 'Completa todos los campos en pantalla', 'warning')
     
     const manejarForm = (e) => {
         e.preventDefault()
@@ -88,7 +91,15 @@ const Inicio = () => {
             const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
             const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
             let resultado = (costoM2 * Number(propiedad) * Number(ubicacion) * Number(metros2))
-            alerta('', 'Cotización realizada con éxito.', 'success')
+            toast.success('Cotización realizada con éxito', {
+                position:"bottom-right",
+                duration: 3000,
+                style: {
+                    background: '#1a376f',
+                    color: '#fff',
+                    border: '2px solid #2090eb'
+                  }
+            })
             setPropiedadResumen(tituloPropiedad.tipo)
             setUbicacionResumen(tituloUbicacion.tipo)
             setValor(resultado.toFixed(2))
@@ -111,7 +122,15 @@ const Inicio = () => {
                 total: valor
             }
             agregarItem(nuevoItem)
-            alerta('', 'Resumen guardado con éxito.', 'success')
+            toast.success('Resumen guardado con éxito', {
+                position:"bottom-right",
+                duration: 3000,
+                style: {
+                    background: '#1a376f',
+                    color: '#fff',
+                    border: '2px solid #2090eb'
+                  }
+            })
             button2.innerHTML = 'Guardar'
         }, 1000)
     }
