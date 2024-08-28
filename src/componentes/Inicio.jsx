@@ -32,6 +32,8 @@ const Inicio = () => {
     const selectUbicacion = document.querySelector("#ubicacion")
     const inputMetros2 = document.querySelector("#metros2")
     const button = document.querySelector('.button')
+    const [propiedadResumen, setPropiedadResumen] = useState('')
+    const [ubicacionResumen, setUbicacionResumen] = useState('')
       
     const manejadorClick = () => {
         if (datosCompletos()) {
@@ -62,6 +64,17 @@ const Inicio = () => {
         setMetros2(nuevoValor)
     }
 
+    const alerta = (titulo, mensaje, icono)=> {
+        Swal.fire({
+            icon: icono || '', 
+            title: titulo || '',
+            text: mensaje,
+            showConfirmButton: false,
+            timer: 3500,
+            width: '240px'
+          })
+    }
+
     const datosCompletos = ()=> (selectPropiedad.value !== '' && selectUbicacion.value !== '' && inputMetros2.value >= 20) ? true : false
 
     const realizarCotizacion = () => datosCompletos() ? manejarForm() : alerta('', 'Debes completar todos los datos en pantalla..', 'warning')
@@ -75,8 +88,8 @@ const Inicio = () => {
             const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
             let resultado = (costoM2 * Number(propiedad) * Number(ubicacion) * Number(metros2))
             alerta('', 'Cotización realizada con éxito.', 'success')
-            setPropiedad(tituloPropiedad.tipo)
-            setUbicacion(tituloUbicacion.tipo)
+            setPropiedadResumen(tituloPropiedad.tipo)
+            setUbicacionResumen(tituloUbicacion.tipo)
             setValor(resultado.toFixed(2))
             button.innerHTML = 'Cotizar'
         }, 1000)}
@@ -84,26 +97,19 @@ const Inicio = () => {
 
     const guardar = () => {
         const fecha = new Date().toLocaleString()
+        const tituloPropiedad = datosPropiedad.find(item => item.factor === Number(propiedad))
+        const tituloUbicacion = datosUbicacion.find(item => item.factor === Number(ubicacion))
         const nuevoItem = {
             fecha: fecha,
-            propiedad,
-            ubicacion,
+            propiedad: tituloPropiedad.tipo,
+            ubicacion: tituloUbicacion.tipo,
             metros2,
             total: valor
         }
         agregarItem(nuevoItem)
     }
 
-    const alerta = (titulo, mensaje, icono)=> {
-        Swal.fire({
-            icon: icono || '', 
-            title: titulo || '',
-            text: mensaje,
-            showConfirmButton: false,
-            timer: 3500,
-            width: '240px'
-          })
-    }
+    
     
     return (
         <section className='contenedor'>
@@ -129,8 +135,8 @@ const Inicio = () => {
                 <div className={activo ? 'datos-valor' : 'display'}>
                     <h3>Tu resumen</h3>
                     <div className='resumen'>
-                        <span>Propiedad: {propiedad}</span>
-                        <span>Ubicacion: {ubicacion} </span>
+                        <span>Propiedad: {propiedadResumen}</span>
+                        <span>Ubicacion: {ubicacionResumen} </span>
                         <span>Metros cuadrados: {metros2} </span>
                         <p className='importe'>Precio estimado: $ {valor}</p>
                         <button onClick={guardar} className='button'>Guardar</button>
