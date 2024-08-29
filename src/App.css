@@ -106,6 +106,13 @@ body {
   border-radius: 0 0 5px 5px;
 }
 
+.resumen span {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 90%;
+}
+
 .resumen p {
   border-top: 1px solid #1a376f;
   text-align: center;
@@ -308,10 +315,18 @@ table tbody tr:last-child {
   border-bottom: 4px solid #1a376f;
 }
 
-.pro {
-  text-align: center;
-}
-
 .display {
   display: none;
+}
+
+@media only screen and (max-width:1100px) {
+  .contenedor-form {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width:700px) {
+  .form {
+    width: auto;
+  }
 }
