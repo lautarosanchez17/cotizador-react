@@ -8,8 +8,6 @@
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
-
-
 ::selection {
   background-color: #1a376f;
   color: #fff;
@@ -293,7 +291,7 @@ th, td {
   padding: 20px 10px;
 }
 
-table thead tr {
+table thead th {
   color: #ffffff;
   background-color: #1a376f;
 }
@@ -303,8 +301,16 @@ table tbody tr {
   font-size: 14px;
 }
 
+table tbody tr:nth-child(even) {
+  background-color: #1a366f2c;
+}
+
+table thead th {
+  border-right: 1px solid white;
+}
+
 table tbody td {
-  border-right: 1px solid #dddddd;
+  border-right: 1px solid #1a376f;
 }
 
 table tbody td:last-child {
@@ -323,10 +329,78 @@ table tbody tr:last-child {
   .contenedor-form {
     flex-direction: column;
   }
+
+  table {
+    width: fit-content;
+  }
+}
+
+@media only screen and (max-width:950px) {
+  
+  table thead {
+    display: none;
+  }
+
+  table {
+    display: block;
+    width: 90%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  table tbody {
+    background-color: none;
+    border-radius: none;
+    gap: 10px;
+  }
+
+  tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  table tbody tr:nth-child(even) {
+    background-color: #1a366f2c;
+  }
+
+  table td, th {
+    border: 1px solid #1a376f;
+  }
+
+  table tbody tr {
+    border-bottom: 4px solid #1a376f;
+    border-right: 1px solid #1a376f;
+  }
+
+  table tbody td {
+    text-align: right;
+    padding-left: 50%;
+    text-align: right;
+    position: relative;
+    height: 100%;
+  }
+
+  table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+    padding-left: 15px;
+    text-align: left;
+    font-weight: 800;
+    color: #1a376f;
+    border-right: 1px solid #1a376f;
+  }
+
+
 }
 
 @media only screen and (max-width:700px) {
   .form {
-    width: auto;
+    width: fit-content;
   }
 }

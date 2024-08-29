@@ -5,8 +5,6 @@ const Historial = () => {
 
     const {historialUsuario} = useContext(userContext)
 
-    const tablaHistorial = document.querySelector("tbody")
-
     return (
         <section className='historial'>
             <h1>Historial<img src="/public/ico/img/logo-historial.png" alt="logo historial" /></h1>
@@ -20,15 +18,15 @@ const Historial = () => {
                             <th>Ubicación</th>
                             <th>Metros cuadrados</th>
                             <th>Póliza mensual</th>
-                            </tr>
+                        </tr>
                     </thead>
                     <tbody>
                         {historialUsuario.map((item, i) => <tr key={i}> 
-                            <td>{item.fecha}</td>
-                            <td>{item.propiedad}</td>
-                            <td>{item.ubicacion}</td>
-                            <td>{item.metros2}</td>
-                            <td>$ {item.total}</td>
+                            <td data-label="Fecha de cotización">{item.fecha}</td>
+                            <td data-label="Propiedad">{item.propiedad}</td>
+                            <td data-label="Ubicación">{item.ubicacion}</td>
+                            <td data-label="Metros cuadrados">{item.metros2}</td>
+                            <td data-label="Póliza mensual">$ {item.total}</td>
                         </tr>)} 
                     </tbody>
                 </table>
